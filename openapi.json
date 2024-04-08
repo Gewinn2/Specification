@@ -111,47 +111,6 @@
         }
       }
     },
-    "/sign-up":{
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "summary": "Регистрация пользователя",
-        "description": "Получает email и password, добавляет в бд нового пользователя с переданной почтой и захэшированным паролем.",
-        "operationId": "UserRegistration",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          }
-        },
-        "responses":{
-          "201":{
-            "description": "Пользователь добавлен",
-            "content":{
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          }, 
-          "404": {
-            "description": "Проблемка",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/sign-in":{
       "post": {
         "tags": [
