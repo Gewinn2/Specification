@@ -5,15 +5,18 @@
     "version": "v1",
     "contact": {
       "name": "IQJ API",
-        "url": "https://92.63.105.190:3333"
+        "url": "https://92.63.105.190"
     }
   },
   "servers": [
     {
-      "url": "https://92.63.105.190:3333"
+      "url": "https://92.63.105.190"
     }, 
     {
       "url": "http://localhost:3333"
+    },
+    {
+      "url": "https://mireaiqj.ru"
     }
   ],
   "paths": {
