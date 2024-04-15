@@ -67,6 +67,45 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "News"
+        ],
+        "summary": "Возвращает последние блочные новости",
+        "description": "Получает offset и count из запроса,возвращает массив с последними новостям с учетом offset(сколько новостей нужно пропустить) и count(сколько новостей нужно вывести).",
+        "operationId": "PostNews",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsblockP"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/NewsblockP"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/news_id": {
@@ -218,7 +257,46 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ad"
+                  "$ref": "#/components/schemas/AdG"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Ad"
+        ],
+        "summary": "Возвращает объявления",
+        "description": "Получает count из запроса и возвращает массив с последними объявлениями.",
+        "operationId": "PostAd",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdP"
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdG"
                 }
               }
             }
@@ -295,6 +373,37 @@
           }
         }
       },
+      "NewsblockP": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "1"
+          },
+          "header": {
+            "type": "string",
+            "example": "Котики собачки"
+          },
+          "link": {
+            "type": "string",
+            "example": ""
+          },
+          "image_link": {
+            "type": "array",
+            "items": {
+                "type": "string"
+              }
+          },
+          "publication_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "text": {
+            "type": "string",
+            "example": "11 марта РТУ МИРЭА посетила официальная делегация Корейской Народно-Демократической Республики."
+          }
+        }
+      },
       "User": {
         "type": "object",
         "properties": {
@@ -349,14 +458,23 @@
           }
         }
       },
-      "Ad": {
+      "AdG": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
             "example": "1"
           },
-          "text": {
+          "content": {
+            "type": "string",
+            "example": "Если ты хлопнешь в ладоши 6 раз, прыгнешь 3 раза, закроешь глаза и досчитаешь до 10, то под твоей кроватью появится айфон."
+          }
+        }
+      },
+      "AdP": {
+        "type": "object",
+        "properties": {
+          "content": {
             "type": "string",
             "example": "Если ты хлопнешь в ладоши 6 раз, прыгнешь 3 раза, закроешь глаза и досчитаешь до 10, то под твоей кроватью появится айфон."
           }
