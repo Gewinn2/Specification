@@ -5,18 +5,15 @@
     "version": "v1",
     "contact": {
       "name": "IQJ API",
-        "url": "https://92.63.105.190"
+        "url": "https://mireaiqj.ru"
     }
   },
   "servers": [
     {
-      "url": "https://92.63.105.190"
+      "url": "https://mireaiqj.ru:8443"
     }, 
     {
       "url": "http://localhost:3333"
-    },
-    {
-      "url": "https://mireaiqj.ru"
     }
   ],
   "paths": {
@@ -154,6 +151,90 @@
           }
         }
       }
+    },
+    "/sign-up":{
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Регистрация",
+        "description": "Получает email, password, ФИО, БИО, роль добавляет пользователя в бд.",
+        "operationId": "UserRegistration",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserReg"
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "Регистрация прошла успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserReg"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ad":{
+      "get": {
+        "tags": [
+          "Ad"
+        ],
+        "summary": "Возвращает объявления",
+        "description": "Получает count из запроса и возвращает массив с последними объявлениями.",
+        "operationId": "GetAd",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "count",
+            "schema": {
+              "type": "integer",
+              "description": "Сколько объявлений нужно получить.",
+              "default": 1
+            }
+          }
+        ],
+        "responses":{
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ad"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -228,12 +309,56 @@
           }
         }
       },
+      "UserReg": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Данечек"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email",
+                "example": "ivanovivan@yandex.ru"
+              },
+              "password": {
+                "type": "string",
+                "example": "qwerty1234"
+              }
+            }
+          },
+          "bio": {
+            "type": "string",
+            "example": ""
+          },
+          "role": {
+            "type": "string",
+            "example": "student"
+          }
+        }
+      },
       "JWT": {
         "type": "object",
         "properties": {
           "jwt": {
             "type": "string",
             "example": "nqhbdqLKVWLBlbaddwvad.advIdwkvdkavdvauvdw.davgjdvadvamddmvgad"
+          }
+        }
+      },
+      "Ad": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "1"
+          },
+          "text": {
+            "type": "string",
+            "example": "Если ты хлопнешь в ладоши 6 раз, прыгнешь 3 раза, закроешь глаза и досчитаешь до 10, то под твоей кроватью появится айфон."
           }
         }
       },
@@ -255,3 +380,4 @@
     }
   }
 }
+
