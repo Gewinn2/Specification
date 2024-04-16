@@ -67,30 +67,32 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/news":{
       "post": {
         "tags": [
           "News"
         ],
-        "summary": "Возвращает последние блочные новости",
-        "description": "Получает offset и count из запроса,возвращает массив с последними новостям с учетом offset(сколько новостей нужно пропустить) и count(сколько новостей нужно вывести).",
+        "summary": "Создание новости",
+        "description": "Получает header, link, image_link, tags, publication_time, text и создает новость.",
         "operationId": "PostNews",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewsblockP"
+                "$ref": "#/components/schemas/NewsP"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Успешный ответ",
+            "description": "Новость создана",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref" : "#/components/schemas/NewsblockP"
+                  "$ref" : "#/components/schemas/NewsG"
                 }
               }
             }
@@ -162,7 +164,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/UserReg"
               }
             }
           }
@@ -237,10 +239,10 @@
         "tags": [
           "Ad"
         ],
-        "summary": "Возвращает объявления",
-        "description": "Получает count из запроса и возвращает массив с последними объявлениями.",
+        "summary": "Получение объявления",
+        "description": "Получает count из запроса и выдает массив с объявлениями.",
         "operationId": "GetAd",
-        "parameters": [
+        "parameters":[
           {
             "in": "query",
             "name": "count",
@@ -273,13 +275,15 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/ad":{
       "post": {
         "tags": [
           "Ad"
         ],
-        "summary": "Возвращает объявления",
-        "description": "Получает count из запроса и возвращает массив с последними объявлениями.",
+        "summary": "Создание объявления",
+        "description": "Получает content в теле JSON.",
         "operationId": "PostAd",
         "requestBody": {
           "content": {
@@ -290,6 +294,58 @@
             }
           }
         },
+        "responses":{
+          "200": {
+            "description": "Добавление объявления прошло успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdG"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lessons":{
+      "get": {
+        "tags": [
+          "Schedule"
+        ],
+        "summary": "Возвращает массив с расписанием",
+        "description": "Получает crtiterion и value из запроса и возвращает массив с расписанием по заданным критериям.",
+        "operationId": "GetLessons",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "criterion",
+            "schema": {
+              "type": "string",
+              "description": "Раписание чего должно быть(преподаватель, группа или аудитория).",
+              "default": "group"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "schema": {
+              "type": "string",
+              "description": "Имя параметра расписания(группа, имя преподавателя, аудитория).",
+              "default": "ЭФБО-01-23"
+            }
+          }
+        ],
         "responses":{
           "200": {
             "description": "Успешный ответ",
@@ -367,13 +423,55 @@
             "type": "string",
             "example": "https://celes.club/uploads/posts/2022-10/1666897679_16-celes-club-p-smeshnoi-kot-krasivo-16.jpg"
           },
+          "tags": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "example": "сотруникам"
+              }
+          },
           "publication_time": {
             "type": "string",
             "format": "date-time"
           }
         }
       },
-      "NewsblockP": {
+      "NewsP": {
+        "type": "object",
+        "properties": {
+          "header": {
+            "type": "string",
+            "example": "Котики собачки"
+          },
+          "link": {
+            "type": "string",
+            "example": ""
+          },
+          "image_link": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "example": "https://celes.club/uploads/posts/2022-10/1666897679_16-celes-club-p-smeshnoi-kot-krasivo-16.jpg"
+              }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "example": "сотрудникам"
+              }
+          },
+          "publication_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "text": {
+            "type": "string",
+            "example": "11 марта РТУ МИРЭА посетила официальная делегация Корейской Народно-Демократической Республики."
+          }
+        }
+      },
+      "NewsG": {
         "type": "object",
         "properties": {
           "id": {
@@ -391,7 +489,15 @@
           "image_link": {
             "type": "array",
             "items": {
-                "type": "string"
+                "type": "string",
+                "example": "https://celes.club/uploads/posts/2022-10/1666897679_16-celes-club-p-smeshnoi-kot-krasivo-16.jpg"
+              }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "example": "сотруникам"
               }
           },
           "publication_time": {
@@ -450,13 +556,8 @@
         }
       },
       "JWT": {
-        "type": "object",
-        "properties": {
-          "jwt": {
-            "type": "string",
-            "example": "nqhbdqLKVWLBlbaddwvad.advIdwkvdkavdvauvdw.davgjdvadvamddmvgad"
-          }
-        }
+        "type": "string",
+        "example": "nqhbdqLKVWLBlbaddwvad.advIdwkvdkavdvauvdw.davgjdvadvamddmvgad"
       },
       "AdG": {
         "type": "object",
@@ -483,13 +584,9 @@
       "Error": {
         "type": "object",
         "required": [
-          "code",
           "message"
         ],
         "properties": {
-          "code": {
-            "type": "integer"
-          },
           "message": {
             "type": "string"
           }
