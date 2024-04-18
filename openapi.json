@@ -392,6 +392,13 @@
             "type": "string",
             "example": "https://celes.club/uploads/posts/2022-10/1666897679_16-celes-club-p-smeshnoi-kot-krasivo-16.jpg"
           },
+          "tags": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "example": "сотрудникам"
+              }
+          },
           "publication_time": {
             "type": "string",
             "format": "date-time"
@@ -427,7 +434,7 @@
             "type": "array",
             "items": {
                 "type": "string",
-                "example": "сотруникам"
+                "example": "сотрудникам"
               }
           },
           "publication_time": {
