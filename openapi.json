@@ -164,7 +164,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserReg"
+                "$ref": "#/components/schemas/User"
               }
             }
           }
@@ -205,7 +205,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserReg"
+                "$ref": "#/components/schemas/User"
               }
             }
           }
@@ -216,7 +216,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserReg"
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -421,6 +421,10 @@
           "header": {
             "type": "string",
             "example": "РТУ МИРЭА посетила официальная делегация КНДР"
+          },
+          "link": {
+            "type": "string",
+            "example": "https://www.anekdot.ru/release/anekdot/year/2023/7"
           },
           "text": {
             "type": "string",
