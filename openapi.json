@@ -240,19 +240,8 @@
           "Ad"
         ],
         "summary": "Получение объявления",
-        "description": "Получает count из запроса и выдает массив с объявлениями.",
+        "description": "Выдает массив с объявлениями, у которых срок годности меньше текущей даты, если таких объявлений нет - вернет пустой массив.",
         "operationId": "GetAd",
-        "parameters":[
-          {
-            "in": "query",
-            "name": "count",
-            "schema": {
-              "type": "integer",
-              "description": "Сколько объявлений нужно получить.",
-              "default": 1
-            }
-          }
-        ],
         "responses":{
           "200": {
             "description": "Успешный ответ",
@@ -580,6 +569,14 @@
           "content": {
             "type": "string",
             "example": "Если ты хлопнешь в ладоши 6 раз, прыгнешь 3 раза, закроешь глаза и досчитаешь до 10, то под твоей кроватью появится айфон."
+          }, 
+          "creation_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiration_date": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -589,6 +586,14 @@
           "content": {
             "type": "string",
             "example": "Если ты хлопнешь в ладоши 6 раз, прыгнешь 3 раза, закроешь глаза и досчитаешь до 10, то под твоей кроватью появится айфон."
+          }, 
+          "creation_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiration_date": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -606,4 +611,3 @@
     }
   }
 }
-
