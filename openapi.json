@@ -13,7 +13,7 @@
       "url": "https://mireaiqj.ru:8443"
     }, 
     {
-      "url": "http://localhost:3333"
+      "url": "http://localhost:8443"
     }
   ],
   "paths": {
@@ -240,7 +240,7 @@
           "Ad"
         ],
         "summary": "Получение объявления",
-        "description": "Выдает массив с объявлениями, у которых срок годности меньше текущей даты, если таких объявлений нет - вернет пустой массив.",
+        "description": "Выдает массив с объявлениями, у которых срок годности больше текущей даты, если таких объявлений нет - вернет пустой массив.",
         "operationId": "GetAd",
         "responses":{
           "200": {
@@ -248,7 +248,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AdG"
+                  "$ref": "#/components/schemas/AdArr"
                 }
               }
             }
@@ -597,6 +597,12 @@
           }
         }
       },
+      "AdArr": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/AdG"
+        }
+      },
       "Error": {
         "type": "object",
         "required": [
@@ -611,3 +617,4 @@
     }
   }
 }
+
