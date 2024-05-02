@@ -305,6 +305,45 @@
             }
           }
         }
+      },
+      "put": {
+        "tags": [
+          "Ad"
+        ],
+        "summary": "Изменение объявления",
+        "description": "Изменяет содержание, дату создания и срок годности на переданные в запросе для объявления с переданным id.",
+        "operationId": "PutAd",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdG"
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdG"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/lessons":{
@@ -567,34 +606,34 @@
             "type": "string",
             "example": "1"
           },
-          "content": {
+          "ad_content": {
             "type": "string",
             "example": "Если ты хлопнешь в ладоши 6 раз, прыгнешь 3 раза, закроешь глаза и досчитаешь до 10, то под твоей кроватью появится айфон."
           }, 
           "creation_date": {
             "type": "string",
-            "format": "date-time"
+            "example": "2024-04-27T00:00:00Z"
           },
           "expiration_date": {
             "type": "string",
-            "format": "date-time"
+            "example": "2024-04-27T00:00:00Z"
           }
         }
       },
       "AdP": {
         "type": "object",
         "properties": {
-          "content": {
+          "ad_content": {
             "type": "string",
             "example": "Если ты хлопнешь в ладоши 6 раз, прыгнешь 3 раза, закроешь глаза и досчитаешь до 10, то под твоей кроватью появится айфон."
           }, 
           "creation_date": {
             "type": "string",
-            "format": "date-time"
+            "example": "25.04.2024"
           },
           "expiration_date": {
             "type": "string",
-            "format": "date-time"
+            "example": "29.04.2024"
           }
         }
       },
