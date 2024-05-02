@@ -313,17 +313,18 @@
           "Schedule"
         ],
         "summary": "Возвращает массив с расписанием",
-        "description": "Получает crtiterion и value из запроса и возвращает массив с расписанием по заданным критериям.",
+        "description": "Получает crtiterion и value из запроса и возвращает массив с расписанием по заданным критериям.   Например при GET /lessons?criterion=group&value=ЭФБО-01-23 вернет расписание на неделю группы ЭФБО-01-23. При GET /lessons?criterion=tutor&value=Сафронов А.А. вернет расписание на неделю преподавателя Сафронов А.А. При GET /lessons?criterion=classroom&value=ауд. А-61 (МП-1) вернет расписание на неделю аудитории ауд. А-61 (МП-1). При неверном критерии или значении отправит null",
         "operationId": "GetLessons",
         "parameters": [
-          {
-            "in": "query",
-            "name": "criterion",
-            "schema": {
-              "type": "string",
-              "description": "Раписание чего должно быть(преподаватель, группа или аудитория).",
-              "default": "group"
-            }
+            {
+          "name": "criterion",
+          "in": "query",
+          "description": "Критерий выбора",
+          "schema": {
+            "type": "string",
+            "enum": ["group", "tutor", "classroom"]
+          },
+          "required": true
           },
           {
             "in": "query",
@@ -341,7 +342,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AdG"
+                  "$ref": "#/components/schemas/Schedule"
                 }
               }
             }
@@ -390,7 +391,7 @@
           },
           "publication_time": {
             "type": "string",
-            "format": "date-time"
+            "example": "2024-04-27T00:00:00Z"
           }
         }
       },
@@ -432,7 +433,7 @@
           },
           "publication_time": {
             "type": "string",
-            "format": "date-time"
+            "example": "2024-04-27T00:00:00Z"
           }
         }
       },
@@ -463,7 +464,7 @@
           },
           "publication_time": {
             "type": "string",
-            "format": "date-time"
+            "example": "29.04.2024"
           },
           "text": {
             "type": "string",
@@ -502,7 +503,7 @@
           },
           "publication_time": {
             "type": "string",
-            "format": "date-time"
+            "example": "2024-04-27T00:00:00Z"
           },
           "text": {
             "type": "string",
@@ -612,6 +613,53 @@
           "message": {
             "type": "string"
           }
+        }
+      },
+      "Schedule": {
+        "type": "array",
+        "items": {
+          "type": "object",
+        "properties": {
+          "class_id": {
+            "type": "integer",
+            "example": 0
+          }, 
+          "class_group_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "ЭФБО-01-23"
+            }
+          },
+          "class_teacher_id": {
+            "type": "string",
+            "example": "Сафронов А.А."
+          },
+          "class_count": {
+            "type": "integer",
+            "example": 1
+          },
+          "class_weekday": {
+            "type": "integer",
+            "example": 1
+          },
+          "class_week": {
+            "type": "integer",
+            "example": 1
+          },
+          "class_name": {
+            "type": "string",
+            "example": "кр. 1 н. Физика"
+          },
+          "class_type": {
+            "type": "string",
+            "example": "ЛК"
+          },
+          "class_location": {
+            "type": "string",
+            "example": "ауд. А-15 (В-78)"
+          }
+        }
         }
       }
     }
