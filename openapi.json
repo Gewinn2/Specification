@@ -158,7 +158,7 @@
           "User"
         ],
         "summary": "Аутентификация",
-        "description": "Получает email и password, добавляет проверяет в бд данные, если все хорошо возвращает JWT.",
+        "description": "Получает email и password, проверяет в бд данные, если все хорошо возвращает JWT.",
         "operationId": "UserAuthentification",
         "requestBody": {
           "content": {
@@ -398,8 +398,38 @@
           }
         }
       }
-    }
-  },
+    },
+      "/api/firebase/list_user" : {
+        "get": {
+          "tags": [
+            "firebase"
+          ],
+          "summary": "Возвращает массив со всеми пользователями из firebse",
+          "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/FirebaseUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+        }
+      }
+    },
   "components": {
     "schemas": {
       "Newsblock": {
@@ -698,6 +728,15 @@
             "type": "string",
             "example": "ауд. А-15 (В-78)"
           }
+        }
+        }
+      }, 
+      "FirebaseUser": {
+        "type": "array",
+        "items": {
+          "type": "object",
+        "properties": {
+          
         }
         }
       }
