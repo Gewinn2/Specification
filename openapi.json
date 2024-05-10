@@ -164,7 +164,48 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/UserAuth"
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "Аутентификация прошла успешно", 
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JWT"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/web_sign-in":{
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Аутентификация",
+        "description": "Получает email и password, проверяет в бд данные, если у ползователя роль moderator возвращает JWT.",
+        "operationId": "UserAuthentificationWeb",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserAuth"
               }
             }
           }
@@ -199,13 +240,69 @@
           "User"
         ],
         "summary": "Регистрация",
-        "description": "Получает email, password, ФИО, БИО, роль добавляет пользователя в бд.",
+        "description": "Получает email, password, ФИО, БИО, роль добавляет пользователя в бд c ролью студент.",
         "operationId": "UserRegistration",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "Регистрация прошла успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/update_role":{
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Смена роли пользователя",
+        "description": "Меняет роль для переданного в запросе пользователя на указанную.",
+        "operationId": "UserUpdateRole",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "ivanovivan@yandex.ru"
+          },
+          "password": {
+            "type": "string",
+            "example": "qwerty1234"
+          },
+          "role": {
+            "type": "string",
+            "example": "teacher"
+          }
+        }
               }
             }
           }
@@ -404,7 +501,8 @@
           "tags": [
             "firebase"
           ],
-          "summary": "Возвращает массив со всеми пользователями из firebse",
+          "summary": "Возвращает массив со всеми пользователями из firebase",
+          "description": "Возвращает uid, почту, захэшированный пароль и его соль, ФИО, номер телефона, дату создания пользователя и последний вход.",
           "responses": {
           "200": {
             "description": "Успешный ответ",
@@ -591,37 +689,24 @@
           "password": {
             "type": "string",
             "example": "qwerty1234"
+          },
+          "name": {
+            "type": "string",
+            "example": "vanek"
           }
         }
       },
-      "UserReg": {
+      "UserAuth": {
         "type": "object",
         "properties": {
-          "name": {
+          "email": {
             "type": "string",
-            "example": "Данечек"
+            "format": "email",
+            "example": "ivanovivan@yandex.ru"
           },
-          "data": {
-            "type": "object",
-            "properties": {
-              "email": {
-                "type": "string",
-                "format": "email",
-                "example": "ivanovivan@yandex.ru"
-              },
-              "password": {
-                "type": "string",
-                "example": "qwerty1234"
-              }
-            }
-          },
-          "bio": {
+          "password": {
             "type": "string",
-            "example": ""
-          },
-          "role": {
-            "type": "string",
-            "example": "student"
+            "example": "qwerty1234"
           }
         }
       },
@@ -734,13 +819,46 @@
       "FirebaseUser": {
         "type": "array",
         "items": {
-          "type": "object",
-        "properties": {
-          
-        }
+  "type": "object",
+  "properties": {
+    "uid": {
+      "type": "string",
+      "description": "Уникальный идентификатор пользователя"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Электронная почта пользователя"
+    },
+    "password_hash": {
+      "type": "string",
+      "description": "Хэш пароля пользователя"
+    },
+    "password_salt": {
+      "type": "string",
+      "description": "Соль пароля пользователя"
+    },
+    "display_name": {
+      "type": "string",
+      "description": "Отображаемое имя пользователя"
+    },
+    "phone_number": {
+      "type": "string",
+      "description": "Номер телефона пользователя"
+    },
+    "last_sign_in_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Время последнего входа в систему пользователя"
+    },
+    "creation_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Время создания учетной записи пользователя"
+    }
         }
       }
     }
   }
 }
-
+}
