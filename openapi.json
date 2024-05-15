@@ -17,82 +17,30 @@
     }
   ],
   "paths": {
-    "/news": {
-      "get": {
-        "tags": [
-          "News"
-        ],
-        "summary": "Возвращает последние блочные новости",
-        "description": "Получает offset и count из запроса,возвращает массив с последними новостям с учетом offset(сколько новостей нужно пропустить) и count(сколько новостей нужно вывести).",
-        "operationId": "GetNews",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "offset",
-            "schema": {
-              "type": "integer",
-              "description": "Сколько новостей нужно пропустить",
-              "default": 0
-            }
-          },
-          {
-            "in": "query",
-            "name": "count",
-            "schema": {
-              "type": "integer",
-              "description": "Количество новостей, которые нужно получить",
-              "default": 5
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Успешный ответ",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref" : "#/components/schemas/Newsblock2"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Проблемка",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/news":{
+    "/sign-up":{
       "post": {
         "tags": [
-          "News"
+          "USER"
         ],
-        "summary": "Создание новости",
-        "description": "Получает header, link, image_link, tags, publication_time, text и создает новость.",
-        "operationId": "PostNews",
+        "summary": "Регистрация",
+        "description": "Получает email, password, ФИО, БИО, роль добавляет пользователя в бд c ролью студент.",
+        "operationId": "UserRegistration",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewsP"
+                "$ref": "#/components/schemas/User"
               }
             }
           }
         },
-        "responses": {
+        "responses":{
           "200": {
-            "description": "Новость создана",
+            "description": "Регистрация прошла успешно",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref" : "#/components/schemas/NewsG"
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -101,49 +49,7 @@
             "description": "Проблемка",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/news_id": {
-      "get": {
-        "tags": [
-          "News"
-        ],
-        "summary": "Получает полную версию новости по id",
-        "operationId": "GetNewsById",
-        "parameters":[
-          {
-            "in": "query",
-            "name": "id",
-            "schema": {
-              "type": "integer",
-              "description": "Сколько новостей нужно пропустить",
-              "default": 1
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Успешный ответ",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref" : "#/components/schemas/News"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Проблемка",
-            "content": {
-              "application/json": {
-                "schema": {
+                "schema":{
                   "$ref": "#/components/schemas/Error"
                 }
               }
@@ -155,7 +61,7 @@
     "/sign-in":{
       "post": {
         "tags": [
-          "User"
+          "USER"
         ],
         "summary": "Аутентификация",
         "description": "Получает email и password, проверяет в бд данные, если все хорошо возвращает JWT.",
@@ -196,7 +102,7 @@
     "/web_sign-in":{
       "post": {
         "tags": [
-          "User"
+          "USER"
         ],
         "summary": "Аутентификация",
         "description": "Получает email и password, проверяет в бд данные, если у ползователя роль moderator возвращает JWT.",
@@ -234,51 +140,14 @@
         }
       }
     },
-    "/sign-up":{
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "summary": "Регистрация",
-        "description": "Получает email, password, ФИО, БИО, роль добавляет пользователя в бд c ролью студент.",
-        "operationId": "UserRegistration",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          }
-        },
-        "responses":{
-          "200": {
-            "description": "Регистрация прошла успешно",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Проблемка",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/update_role":{
+    "/auth/update_role":{
       "put": {
+        "security": [
+          {                           "AdminAuth": []
+          }
+        ],
         "tags": [
-          "User"
+          "USER"
         ],
         "summary": "Смена роли пользователя",
         "description": "Меняет роль для переданного в запросе пользователя на указанную.",
@@ -331,10 +200,326 @@
         }
       }
     },
+    "/news": {
+      "get": {
+        "tags": [
+          "NEWS"
+        ],
+        "summary": "Возвращает все блочные новости, определенное количество новостей или новость по id",
+        "description": "Передать только id для получения новости по id, передать offset и count, для получения определенного количества новостей с учетом offset(сколько новостей нужно пропустить) и count(сколько новостей нужно вывести) или ничего не передавать, чтобы получить все новости. При получении новости по id вернется только одна новость не в массиве, для остальных запросов все новости будут в массиве.",
+        "operationId": "GetNews",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "count",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/Newsblock2"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news_search": {
+      "get": {
+        "tags": [
+          "NEWS"
+        ],
+        "summary": "Возвращает все блочные новости, у которых заголовок совпадает с переданным в запросе",
+        "operationId": "GetNewsByHeader",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/Newsblock2"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news_tags": {
+      "get": {
+        "tags": [
+          "NEWS"
+        ],
+        "summary": "Возвращает все блочные новости, у которых тэги совпадают с переданным в запросе.",
+        "operationId": "GetNewsByTags",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "tags",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/Newsblock2"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news_date": {
+      "get": {
+        "tags": [
+          "NEWS"
+        ],
+        "summary": "Возвращает все блочные новости, у которых даты находится между date1 и date2, переданными в запросе.",
+        "operationId": "GetNewsByDate",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date1",
+            "schema": {
+              "type": "string",
+              "example": "2024-05-12T00:00:00Z"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date2",
+            "schema": {
+              "type": "string",
+              "example": "2024-05-14T00:00:00Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/Newsblock2"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/news":{
+      "post": {
+        "security": [
+          {                           "AdminAuth": []
+          }
+        ],
+        "tags": [
+          "NEWS"
+        ],
+        "summary": "Создание новости",
+        "description": "Получает header, link, image_link, tags, publication_time, text и создает новость.",
+        "operationId": "PostNews",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsP"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Новость создана",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/NewsG"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "AdminAuth": []
+          }
+        ],
+        "tags": [
+          "NEWS"
+        ],
+        "summary": "Изменение новости",
+        "description": "Получает id, header, link, image_link, tags, publication_time, text и  новость.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsPut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Новость создана",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/NewsG"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "AdminAuth": []
+          }
+        ],
+        "tags": [
+          "NEWS"
+        ],
+        "summary": "Удаление новости с id, переданным в запросе",
+        "operationId": "DeleteNewsById",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "The news with the id=1 was successfully deleted"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ad":{
       "get": {
         "tags": [
-          "Ad"
+          "AD"
         ],
         "summary": "Получение объявления",
         "description": "Выдает массив с объявлениями, у которых срок годности больше текущей даты, если таких объявлений нет - вернет пустой массив.",
@@ -363,10 +548,46 @@
         }
       }
     },
-    "/api/ad":{
-      "post": {
+    "/ad_all":{
+      "get": {
         "tags": [
-          "Ad"
+          "AD"
+        ],
+        "summary": "Получение всех объявлений",
+        "operationId": "GetAllAd",
+        "responses":{
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdArr"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/ad":{
+      "post": {
+        "security": [
+          {
+            "AdminAuth": []
+          }
+        ],
+        "tags": [
+          "AD"
         ],
         "summary": "Создание объявления",
         "description": "Получает content в теле JSON.",
@@ -382,7 +603,7 @@
         },
         "responses":{
           "200": {
-            "description": "Добавление объявления прошло успешно",
+            "description": "Объявление создано",
             "content": {
               "application/json": {
                 "schema": {
@@ -404,8 +625,12 @@
         }
       },
       "put": {
+        "security": [
+          {                           "AdminAuth": []
+          }
+        ],
         "tags": [
-          "Ad"
+          "AD"
         ],
         "summary": "Изменение объявления",
         "description": "Изменяет содержание, дату создания и срок годности на переданные в запросе для объявления с переданным id.",
@@ -441,12 +666,57 @@
             }
           }
         }
+      },
+      "delete": {
+        "security": [
+          {
+            "AdminAuth": []
+          }
+        ],
+        "tags": [
+          "AD"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Удаление объявления, с id, переданным в запросе",
+        "description": "Получает content в теле JSON.",
+        "operationId": "DeleteAd",
+        "responses":{
+          "200": {
+            "description": "Удаление объявления прошло успешно",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "The advertisement with the id=1 was successfully deleted"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/lessons":{
       "get": {
         "tags": [
-          "Schedule"
+          "SCHEDULE"
         ],
         "summary": "Возвращает массив с расписанием",
         "description": "Получает crtiterion и value из запроса и возвращает массив с расписанием по заданным критериям.   Например при GET /lessons?criterion=group&value=ЭФБО-01-23 вернет расписание на неделю группы ЭФБО-01-23. При GET /lessons?criterion=tutor&value=Сафронов А.А. вернет расписание на неделю преподавателя Сафронов А.А. При GET /lessons?criterion=classroom&value=ауд. А-61 (МП-1) вернет расписание на неделю аудитории ауд. А-61 (МП-1). При неверном критерии или значении отправит null",
@@ -496,13 +766,142 @@
         }
       }
     },
-      "/api/firebase/list_user" : {
+      "/auth/firebase/user" : {
         "get": {
+          "security": [
+          {                           "AdminAuth": []
+          }
+        ],
           "tags": [
-            "firebase"
+            "FIREBASE"
           ],
           "summary": "Возвращает массив со всеми пользователями из firebase",
-          "description": "Возвращает uid, почту, захэшированный пароль и его соль, ФИО, номер телефона, дату создания пользователя и последний вход.",
+          "description": "Возвращает все данные пользователя.",
+          "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/FirebaseUserInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+        },
+        "post": {
+          "security": [
+          {                           "AdminAuth": []
+          }
+        ],
+          "tags": [
+            "FIREBASE"
+          ],
+          "summary": "Создает пользователя в firebase",
+          "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FirebaseUser"
+              }
+            }
+          }
+        },
+          "responses": {
+          "201": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/FirebaseUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+        },
+        "put": {
+          "security": [
+          {                           "AdminAuth": []
+          }
+        ],
+          "tags": [
+            "FIREBASE"
+          ],
+          "summary": "Изменяет данные пользователя в firebase",
+          "description": "Изменяет данные пользователя в firebase на переданные.",
+          "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FirebaseUserUpdate"
+              }
+            }
+          }
+        },
+          "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/FirebaseUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+        },
+        "delete": {
+          "security": [
+          {                           "AdminAuth": []
+          }
+        ],
+          "tags": [
+            "FIREBASE"
+          ],
+          "summary": "Удаляет пользователя из firebase",
+          "description": "Удаляет пользователя из firebase по uid.",
+          "parameters": [
+          {
+            "in": "query",
+            "name": "uid",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
           "responses": {
           "200": {
             "description": "Успешный ответ",
@@ -529,6 +928,13 @@
       }
     },
   "components": {
+  "securitySchemes": {
+    "AdminAuth": {
+      "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+    }
+  },
     "schemas": {
       "Newsblock": {
         "type": "object",
@@ -555,6 +961,14 @@
                 "type": "string",
                 "example": "сотрудникам"
               }
+          },
+          "is_for_students": {
+            "type": "boolean",
+            "example": "false"
+          },
+          "author_name": {
+            "type": "string",
+            "example": "РТУ МИРЭА"
           },
           "publication_time": {
             "type": "string",
@@ -611,6 +1025,10 @@
             "type": "string",
             "example": "Котики собачки"
           },
+          "text": {
+            "type": "string",
+            "example": "11 марта РТУ МИРЭА посетила официальная делегация Корейской Народно-Демократической Республики."
+          },
           "link": {
             "type": "string",
             "example": ""
@@ -629,13 +1047,13 @@
                 "example": "сотрудникам"
               }
           },
+          "author_name": {
+            "type": "string",
+            "example": "РТУ МИРЭА"
+          },
           "publication_time": {
             "type": "string",
             "example": "29.04.2024"
-          },
-          "text": {
-            "type": "string",
-            "example": "11 марта РТУ МИРЭА посетила официальная делегация Корейской Народно-Демократической Республики."
           }
         }
       },
@@ -643,12 +1061,16 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "example": "1"
+            "type": "integer",
+            "example": 1
           },
           "header": {
             "type": "string",
             "example": "Котики собачки"
+          },
+          "text": {
+            "type": "string",
+            "example": "11 марта РТУ МИРЭА посетила официальная делегация Корейской Народно-Демократической Республики."
           },
           "link": {
             "type": "string",
@@ -668,13 +1090,60 @@
                 "example": "сотруникам"
               }
           },
+          "is_for_students": {
+            "type": "boolean",
+            "example": "false"
+          },
+          "author_name": {
+            "type": "string",
+            "example": "РТУ МИРЭА"
+          },
           "publication_time": {
             "type": "string",
             "example": "2024-04-27T00:00:00Z"
+          }
+        }
+      },
+      "NewsPut": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "header": {
+            "type": "string",
+            "example": "Котики собачки"
           },
           "text": {
             "type": "string",
             "example": "11 марта РТУ МИРЭА посетила официальная делегация Корейской Народно-Демократической Республики."
+          },
+          "link": {
+            "type": "string",
+            "example": ""
+          },
+          "image_link": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "example": "https://celes.club/uploads/posts/2022-10/1666897679_16-celes-club-p-smeshnoi-kot-krasivo-16.jpg"
+              }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "example": "сотрудникам"
+              }
+          },
+          "author_name": {
+            "type": "string",
+            "example": "РТУ МИРЭА"
+          },
+          "publication_time": {
+            "type": "string",
+            "example": "29.04.2024"
           }
         }
       },
@@ -717,9 +1186,9 @@
       "AdG": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "example": "1"
+          "ad_id": {
+            "type": "integer",
+            "example": 1
           },
           "ad_content": {
             "type": "string",
@@ -816,7 +1285,7 @@
         }
         }
       }, 
-      "FirebaseUser": {
+      "FirebaseUserInfo": {
         "type": "array",
         "items": {
   "type": "object",
@@ -855,9 +1324,119 @@
       "type": "string",
       "format": "date-time",
       "description": "Время создания учетной записи пользователя"
+    },
+    "position": {
+      "type": "string",
+      "description": "Должность"
+    },
+    "institute": {
+      "type": "string",
+      "description": "Институт"
+    },
+    "role": {
+      "type": "string",
+      "description": "Роль"
+    },
+    "picture": {
+      "type": "string",
+      "description": "Картинка"
     }
         }
       }
+    },
+    "FirebaseUser": {
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Электронная почта пользователя",
+      "example":"ivanovivan@yandex.ru"
+    },
+    "password": {
+      "type": "string",
+      "description": "Пароль пользователя",
+      "example":"qwerty1234"
+    },
+    "display_name": {
+      "type": "string",
+      "description": "Отображаемое имя пользователя",
+      "example":"Иванов Иван Иванович"
+    },
+    "phone_number": {
+      "type": "string",
+      "description": "Номер телефона пользователя",
+      "example":"+79528123456"
+    },
+    "position": {
+      "type": "string",
+      "description": "Должность",
+      "example":"красава"
+    },
+    "institute": {
+      "type": "string",
+      "description": "Институт",
+      "example":"ИПТИП"
+    },
+    "role": {
+      "type": "string",
+      "description": "Роль",
+      "example":"student"
+    },
+    "picture": {
+      "type": "string",
+      "description": "Картинка"
+    }
+        }
+    },
+    "FirebaseUserUpdate": {
+  "type": "object",
+  "properties": {
+    "uid": {
+      "type": "string",
+      "description": "Уникальный идентификатор пользователя"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Электронная почта пользователя",
+      "example":"ivanovivan@yandex.ru"
+    },
+    "password": {
+      "type": "string",
+      "description": "Пароль пользователя",
+      "example":"qwerty1234"
+    },
+    "display_name": {
+      "type": "string",
+      "description": "Отображаемое имя пользователя",
+      "example":"Иванов Иван Иванович"
+    },
+    "phone_number": {
+      "type": "string",
+      "description": "Номер телефона пользователя",
+      "example":"+79528123456"
+    },
+    "position": {
+      "type": "string",
+      "description": "Должность",
+      "example":"красава"
+    },
+    "institute": {
+      "type": "string",
+      "description": "Институт",
+      "example":"ИПТИП"
+    },
+    "role": {
+      "type": "string",
+      "description": "Роль",
+      "example":"student"
+    },
+    "picture": {
+      "type": "string",
+      "description": "Картинка"
+    }
+        }
     }
   }
 }
