@@ -64,13 +64,17 @@
           "USER"
         ],
         "summary": "Аутентификация",
-        "description": "Получает email и password, проверяет в бд данные, если все хорошо возвращает JWT.",
+        "description": "Получает uid хорошо возвращает JWT.",
         "operationId": "UserAuthentification",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserAuth"
+                "properties": {
+                  "uid": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
