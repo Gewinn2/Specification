@@ -17,54 +17,13 @@
     }
   ],
   "paths": {
-    "/sign-up":{
-      "post": {
-        "tags": [
-          "USER"
-        ],
-        "summary": "Регистрация",
-        "description": "Получает email, password, ФИО, БИО, роль добавляет пользователя в бд c ролью студент.",
-        "operationId": "UserRegistration",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          }
-        },
-        "responses":{
-          "200": {
-            "description": "Регистрация прошла успешно",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Проблемка",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/sign-in":{
       "post": {
         "tags": [
-          "USER"
+          "AUTHORIZATION"
         ],
         "summary": "Аутентификация",
-        "description": "Получает uid хорошо возвращает JWT.",
+        "description": "Получает uid возвращает JWT для этого пользователя.",
         "operationId": "UserAuthentification",
         "requestBody": {
           "content": {
@@ -106,16 +65,20 @@
     "/web_sign-in":{
       "post": {
         "tags": [
-          "USER"
+          "AUTHORIZATION"
         ],
-        "summary": "Аутентификация",
-        "description": "Получает email и password, проверяет в бд данные, если у ползователя роль moderator возвращает JWT.",
+        "summary": "Аутентификация в админ панеле",
+        "description": "Получает uid возвращает JWT для этого пользователя, если у него роль administrator.",
         "operationId": "UserAuthentificationWeb",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserAuth"
+                "properties": {
+                  "uid": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
@@ -127,66 +90,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/JWT"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Проблемка",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/update_role":{
-      "put": {
-        "security": [
-          {                           "AdminAuth": []
-          }
-        ],
-        "tags": [
-          "USER"
-        ],
-        "summary": "Смена роли пользователя",
-        "description": "Меняет роль для переданного в запросе пользователя на указанную.",
-        "operationId": "UserUpdateRole",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "example": "ivanovivan@yandex.ru"
-          },
-          "password": {
-            "type": "string",
-            "example": "qwerty1234"
-          },
-          "role": {
-            "type": "string",
-            "example": "teacher"
-          }
-        }
-              }
-            }
-          }
-        },
-        "responses":{
-          "200": {
-            "description": "Регистрация прошла успешно",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -770,6 +673,169 @@
         }
       }
     },
+    "/auth/firebase/profile" : {
+        "get": {
+          "security": [
+          {                           "AdminAuth": []
+          }
+        ],
+          "tags": [
+            "FIREBASE"
+          ],
+          "summary": "Возвращает информацию об аутентифицированном пользователе",
+          "description": "Возвращает все данные пользователя.",
+          "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uid": {
+                      "type": "string",
+                      "description": "Уникальный идентификатор пользователя"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "description": "Электронная почта пользователя"
+                    },
+                    "display_name": {
+                      "type": "string",
+                      "description": "Отображаемое имя пользователя"
+                    },
+                    "phone_number": {
+                      "type": "string",
+                      "description": "Номер телефона пользователя"
+                    },
+                    "last_sign_in_time": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Время последнего входа в систему пользователя"
+                    },
+                    "creation_time": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Время создания учетной записи пользователя"
+                    },
+                    "position": {
+                      "type": "string",
+                      "description": "Должность"
+                    },
+                    "institute": {
+                      "type": "string",
+                      "description": "Институт"
+                    },
+                    "role": {
+                      "type": "string",
+                      "description": "Роль"
+                    },
+                    "picture": {
+                      "type": "string",
+                      "description": "Картинка"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+        },
+        "put": {
+          "security": [
+          {                           "AdminAuth": []
+          }
+        ],
+          "tags": [
+            "FIREBASE"
+          ],
+          "summary": "Изменяет данные аутентифицированного пользователя в firebase",
+          "description": "Изменяет данные пользователя в firebase на переданные.",
+          "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uid": {
+                    "type": "string",
+                    "description": "Уникальный идентификатор пользователя"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Электронная почта пользователя",
+                    "example":"ivanovivan@yandex.ru"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Пароль пользователя",
+                    "example":"qwerty1234"
+                  },
+                  "display_name": {
+                    "type": "string",
+                    "description": "Отображаемое имя пользователя",
+                    "example":"Иванов Иван Иванович"
+                  },
+                  "phone_number": {
+                    "type": "string",
+                    "description": "Номер телефона пользователя",
+                    "example":"+79528123456"
+                  },
+                  "position": {
+                    "type": "string",
+                    "description": "Должность",
+                    "example":"красава"
+                  },
+                  "institute": {
+                    "type": "string",
+                    "description": "Институт",
+                    "example":"ИПТИП"
+                  },
+                  "picture": {
+                    "type": "string",
+                    "description": "Картинка"
+                  }
+                }
+              }
+            }
+          }
+        },
+          "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/FirebaseUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Проблемка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+        }
+      },
       "/auth/firebase/user" : {
         "get": {
           "security": [
@@ -1292,59 +1358,51 @@
       "FirebaseUserInfo": {
         "type": "array",
         "items": {
-  "type": "object",
-  "properties": {
-    "uid": {
-      "type": "string",
-      "description": "Уникальный идентификатор пользователя"
-    },
-    "email": {
-      "type": "string",
-      "format": "email",
-      "description": "Электронная почта пользователя"
-    },
-    "password_hash": {
-      "type": "string",
-      "description": "Хэш пароля пользователя"
-    },
-    "password_salt": {
-      "type": "string",
-      "description": "Соль пароля пользователя"
-    },
-    "display_name": {
-      "type": "string",
-      "description": "Отображаемое имя пользователя"
-    },
-    "phone_number": {
-      "type": "string",
-      "description": "Номер телефона пользователя"
-    },
-    "last_sign_in_time": {
-      "type": "string",
-      "format": "date-time",
-      "description": "Время последнего входа в систему пользователя"
-    },
-    "creation_time": {
-      "type": "string",
-      "format": "date-time",
-      "description": "Время создания учетной записи пользователя"
-    },
-    "position": {
-      "type": "string",
-      "description": "Должность"
-    },
-    "institute": {
-      "type": "string",
-      "description": "Институт"
-    },
-    "role": {
-      "type": "string",
-      "description": "Роль"
-    },
-    "picture": {
-      "type": "string",
-      "description": "Картинка"
-    }
+        "type": "object",
+        "properties": {
+          "uid": {
+            "type": "string",
+            "description": "Уникальный идентификатор пользователя"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Электронная почта пользователя"
+          },
+          "display_name": {
+            "type": "string",
+            "description": "Отображаемое имя пользователя"
+          },
+          "phone_number": {
+            "type": "string",
+            "description": "Номер телефона пользователя"
+          },
+          "last_sign_in_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Время последнего входа в систему пользователя"
+          },
+          "creation_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Время создания учетной записи пользователя"
+          },
+          "position": {
+            "type": "string",
+            "description": "Должность"
+          },
+          "institute": {
+            "type": "string",
+            "description": "Институт"
+          },
+          "role": {
+            "type": "string",
+            "description": "Роль"
+          },
+          "picture": {
+            "type": "string",
+            "description": "Картинка"
+          }
         }
       }
     },
@@ -1394,53 +1452,53 @@
         }
     },
     "FirebaseUserUpdate": {
-  "type": "object",
-  "properties": {
-    "uid": {
-      "type": "string",
-      "description": "Уникальный идентификатор пользователя"
-    },
-    "email": {
-      "type": "string",
-      "format": "email",
-      "description": "Электронная почта пользователя",
-      "example":"ivanovivan@yandex.ru"
-    },
-    "password": {
-      "type": "string",
-      "description": "Пароль пользователя",
-      "example":"qwerty1234"
-    },
-    "display_name": {
-      "type": "string",
-      "description": "Отображаемое имя пользователя",
-      "example":"Иванов Иван Иванович"
-    },
-    "phone_number": {
-      "type": "string",
-      "description": "Номер телефона пользователя",
-      "example":"+79528123456"
-    },
-    "position": {
-      "type": "string",
-      "description": "Должность",
-      "example":"красава"
-    },
-    "institute": {
-      "type": "string",
-      "description": "Институт",
-      "example":"ИПТИП"
-    },
-    "role": {
-      "type": "string",
-      "description": "Роль",
-      "example":"student"
-    },
-    "picture": {
-      "type": "string",
-      "description": "Картинка"
-    }
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Уникальный идентификатор пользователя"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Электронная почта пользователя",
+          "example":"ivanovivan@yandex.ru"
+        },
+        "password": {
+          "type": "string",
+          "description": "Пароль пользователя",
+          "example":"qwerty1234"
+        },
+        "display_name": {
+          "type": "string",
+          "description": "Отображаемое имя пользователя",
+          "example":"Иванов Иван Иванович"
+        },
+        "phone_number": {
+          "type": "string",
+          "description": "Номер телефона пользователя",
+          "example":"+79528123456"
+        },
+        "position": {
+          "type": "string",
+          "description": "Должность",
+          "example":"красава"
+        },
+        "institute": {
+          "type": "string",
+          "description": "Институт",
+          "example":"ИПТИП"
+        },
+        "role": {
+          "type": "string",
+          "description": "Роль",
+          "example":"student"
+        },
+        "picture": {
+          "type": "string",
+          "description": "Картинка"
         }
+      }
     }
   }
 }
