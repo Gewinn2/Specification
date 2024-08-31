@@ -49,8 +49,18 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
             "content": {
               "application/json": {
                 "schema":{
@@ -101,8 +111,28 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Недостаточно прав",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
             "content": {
               "application/json": {
                 "schema":{
@@ -151,8 +181,18 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
             "content": {
               "application/json": {
                 "schema":{
@@ -206,11 +246,21 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "400": {
+            "description": "Неверные входные данные",
             "content": {
               "application/json": {
-                "schema": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
                   "$ref": "#/components/schemas/Error"
                 }
               }
@@ -246,11 +296,21 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "400": {
+            "description": "Неверные входные данные",
             "content": {
               "application/json": {
-                "schema": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
                   "$ref": "#/components/schemas/Error"
                 }
               }
@@ -286,11 +346,21 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "400": {
+            "description": "Неверные входные данные",
             "content": {
               "application/json": {
-                "schema": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
                   "$ref": "#/components/schemas/Error"
                 }
               }
@@ -335,11 +405,21 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "400": {
+            "description": "Неверные входные данные",
             "content": {
               "application/json": {
-                "schema": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
                   "$ref": "#/components/schemas/Error"
                 }
               }
@@ -370,7 +450,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Новость создана",
             "content": {
               "application/json": {
@@ -380,11 +460,41 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "400": {
+            "description": "Неверные входные данные",
             "content": {
               "application/json": {
-                "schema": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Недостаточно прав",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
                   "$ref": "#/components/schemas/Error"
                 }
               }
@@ -423,11 +533,41 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "400": {
+            "description": "Неверные входные данные",
             "content": {
               "application/json": {
-                "schema": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Недостаточно прав",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
                   "$ref": "#/components/schemas/Error"
                 }
               }
@@ -467,11 +607,41 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "400": {
+            "description": "Неверные входные данные",
             "content": {
               "application/json": {
-                "schema": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Недостаточно прав",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
                   "$ref": "#/components/schemas/Error"
                 }
               }
@@ -499,8 +669,8 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "500": {
+            "description": "Проблема на стороне сервера",
             "content": {
               "application/json": {
                 "schema":{
@@ -530,8 +700,8 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "500": {
+            "description": "Проблема на стороне сервера",
             "content": {
               "application/json": {
                 "schema":{
@@ -566,7 +736,7 @@
           }
         },
         "responses":{
-          "200": {
+          "201": {
             "description": "Объявление создано",
             "content": {
               "application/json": {
@@ -576,8 +746,38 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Недостаточно прав",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
             "content": {
               "application/json": {
                 "schema":{
@@ -619,8 +819,38 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Недостаточно прав",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
             "content": {
               "application/json": {
                 "schema":{
@@ -664,8 +894,38 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Недостаточно прав",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
             "content": {
               "application/json": {
                 "schema":{
@@ -717,8 +977,18 @@
               }
             }
           },
-          "404": {
-            "description": "Проблемка",
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
             "content": {
               "application/json": {
                 "schema":{
@@ -1307,8 +1577,13 @@
         }
       },
       "JWT": {
-        "type": "string",
-        "example": "nqhbdqLKVWLBlbaddwvad.advIdwkvdkavdvauvdw.davgjdvadvamddmvgad"
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "nqhbdqLKVWLBlbaddwvad.advIdwkvdkavdvauvdw.davgjdvadvamddmvgad"
+          }
+        }
       },
       "AdG": {
         "type": "object",
@@ -1357,10 +1632,10 @@
       "Error": {
         "type": "object",
         "required": [
-          "message"
+          "error"
         ],
         "properties": {
-          "message": {
+          "error": {
             "type": "string"
           }
         }
