@@ -644,8 +644,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "The news with the id=1 was successfully deleted"
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "string",
+                      "example": "The news with the id=1 was successfully deleted"
+                    }
+                  }
                 }
               }
             }
@@ -931,8 +936,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "The advertisement with the id=1 was successfully deleted"
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "string",
+                      "example": "The advertisement with the id=1 was successfully deleted"
+                    }
+                  }
                 }
               }
             }
