@@ -288,6 +288,11 @@
     },
     "/auth/lks":{
       "get": {
+        "security": [
+          {
+            "Auth": []
+          }
+        ],
         "tags": [
           "LKS"
         ],
@@ -334,40 +339,38 @@
         }
       },
       "put": {
+        "security": [
+          {
+            "Auth": []
+          }
+        ],
         "tags": [
           "LKS"
         ],
-        "summary": "Обновление access and refresh tokens",
+        "summary": "Обновление данных пользователя",
         "requestBody": {
           "required": true,
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "image/png": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "Файл для загрузки"
-                  }
-                }
+                "$ref": "#/components/schemas/UserDataPut"
               }
             }
           }
         },
         "responses":{
           "200": {
-            "description": "Аутентификация прошла успешно", 
+            "description": "Данные успешно обновлены", 
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/JWT"
+                  "$ref": "#/components/schemas/UserDataPut"
                 }
               }
             }
           },
-          "400": {
-            "description": "Неверные входные данные",
+          "401": {
+            "description": "Пользователь не авторизован",
             "content": {
               "application/json": {
                 "schema":{
@@ -389,10 +392,16 @@
         }
       },
       "delete": {
+        "security": [
+          {
+            "Auth": []
+          }
+        ],
         "tags": [
           "LKS"
         ],
-        "summary": "Обновление access and refresh tokens",
+        "summary": "Удаление пользователя",
+        "description": "Удаление своего аккаунта или аккаунта с переданным id(только для модераторов)",
         "parameters": [
           {
             "in": "query",
@@ -404,17 +413,22 @@
         ],
         "responses":{
           "200": {
-            "description": "Аутентификация прошла успешно", 
+            "description": "Пользователь успешно удален", 
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/JWT"
+                  "properties": {
+                    "response": {
+                      "type": "string",
+                      "example": "User with the id=1 was successfully deleted"
+                    }
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "Неверные входные данные",
+          "401": {
+            "description": "Пользователь не авторизован",
             "content": {
               "application/json": {
                 "schema":{
@@ -436,12 +450,142 @@
         }
       }
     },
-    "/auth/lks/upload":{
-      "post": {
+    "/auth/lks/password":{
+      "put": {
+        "security": [
+          {
+            "Auth": []
+          }
+        ],
         "tags": [
           "LKS"
         ],
-        "summary": "Обновление access and refresh tokens",
+        "summary": "Изменение пароля пользователя",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema":{
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "Пароль успешно сменен", 
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "string",
+                      "example": "Password was changed"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/lks/avatar":{
+      "get": {
+        "security": [
+          {
+            "Auth": []
+          }
+        ],
+        "tags": [
+          "LKS"
+        ],
+        "summary": "Получение аватарки профиля",
+        "responses":{
+          "200": {
+            "description": "Успешный ответ", 
+            "content": {
+              "application/octet-stream": {}
+            }
+          },
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "Auth": []
+          }
+        ],
+        "tags": [
+          "LKS"
+        ],
+        "summary": "Добавление аватарки к профилю",
         "requestBody": {
           "required": true,
           "content": {
@@ -449,7 +593,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "image/png": {
+                  "image": {
                     "type": "string",
                     "format": "binary",
                     "description": "Файл для загрузки"
@@ -461,7 +605,7 @@
         },
         "responses":{
           "200": {
-            "description": "Аутентификация прошла успешно", 
+            "description": "Аватарка успешно добавлена", 
             "content": {
               "application/json": {
                 "schema": {
@@ -472,6 +616,131 @@
           },
           "400": {
             "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "Auth": []
+          }
+        ],
+        "tags": [
+          "LKS"
+        ],
+        "summary": "Изменение аватарки профиля",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Файл для загрузки"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "Аватарка успешно обновлена", 
+            "content": {
+              "application/octet-stream": {}
+            }
+          },
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "Auth": []
+          }
+        ],
+        "tags": [
+          "LKS"
+        ],
+        "summary": "Удаление аватарки профиля",
+        "description": "Удаление своей аватарки",
+        "responses":{
+          "200": {
+            "description": "Аватарка профиля успешно удалена", 
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "response": {
+                      "type": "string",
+                      "example": "Avatar was successfully deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
             "content": {
               "application/json": {
                 "schema":{
@@ -720,7 +989,8 @@
     "/auth/news":{
       "post": {
         "security": [
-          {                           "AdminAuth": []
+          {                           
+            "Auth": []
           }
         ],
         "tags": [
@@ -794,7 +1064,7 @@
       "put": {
         "security": [
           {
-            "AdminAuth": []
+            "Auth": []
           }
         ],
         "tags": [
@@ -867,7 +1137,7 @@
       "delete": {
         "security": [
           {
-            "AdminAuth": []
+            "Auth": []
           }
         ],
         "tags": [
@@ -1011,7 +1281,7 @@
       "post": {
         "security": [
           {
-            "AdminAuth": []
+            "Auth": []
           }
         ],
         "tags": [
@@ -1084,7 +1354,8 @@
       },
       "put": {
         "security": [
-          {                           "AdminAuth": []
+          {
+            "Auth": []
           }
         ],
         "tags": [
@@ -1158,7 +1429,7 @@
       "delete": {
         "security": [
           {
-            "AdminAuth": []
+            "Auth": []
           }
         ],
         "tags": [
@@ -1236,32 +1507,86 @@
         }
       }
     },
-    "/lessons":{
+    "/schedule/search":{
+      "get": {
+        "tags": [
+          "SCHEDULE"
+        ],
+        "summary": "Поиск данных для расписания",
+        "description": "Возвращает id, полное название и тип объекта расписания. ЭТО ВСЕ НУЖНЫЕ ДАННЫЕ, ЧТОБЫ ПОТОМ ПОЛУЧИТЬ ПО НИМ РАСПИСАНИЕ",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses":{
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ScheduleSearch"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/schedule/get":{
       "get": {
         "tags": [
           "SCHEDULE"
         ],
         "summary": "Возвращает массив с расписанием",
-        "description": "Получает crtiterion и value из запроса и возвращает массив с расписанием по заданным критериям.   Например при GET /lessons?criterion=group&value=ЭФБО-01-23 вернет расписание на неделю группы ЭФБО-01-23. При GET /lessons?criterion=tutor&value=Сафронов А.А. вернет расписание на неделю преподавателя Сафронов А.А. При GET /lessons?criterion=classroom&value=ауд. А-61 (МП-1) вернет расписание на неделю аудитории ауд. А-61 (МП-1). При неверном критерии или значении отправит null",
-        "operationId": "GetLessons",
+        "description": "Возвращает массив с расписанием по данным полученным из запроса /schedule/search",
         "parameters": [
-            {
-          "name": "criterion",
-          "in": "query",
-          "description": "Критерий выбора",
-          "schema": {
-            "type": "string",
-            "enum": ["group", "tutor", "classroom"]
-          },
-          "required": true
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            }
           },
           {
             "in": "query",
-            "name": "value",
+            "name": "target",
             "schema": {
-              "type": "string",
-              "description": "Имя параметра расписания(группа, имя преподавателя, аудитория).",
-              "default": "ЭФБО-01-23"
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "title",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1302,10 +1627,10 @@
   },
   "components": {
   "securitySchemes": {
-    "AdminAuth": {
+    "Auth": {
       "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
+      "name": "Authorization",
+      "in": "header"
     }
   },
     "schemas": {
@@ -1641,6 +1966,39 @@
           }
         }
       },
+      "UserDataPut": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Имя пользователя"
+          },
+          "last_name": {
+            "type": "string",
+            "description": "Фамилия"
+          },
+          "first_name": {
+            "type": "string",
+            "description": "Имя"
+          },
+          "middle_name": {
+            "type": "string",
+            "description": "Отчество"
+          },
+          "role": {
+            "type": "string",
+            "description": "Роль (студент/преподаватель)"
+          },
+          "institute": {
+            "type": "string",
+            "description": "Институт"
+          },
+          "position_or_course": {
+            "type": "string",
+            "description": "Должность или курс"
+          }
+        }
+      },
       "JWT": {
         "type": "object",
         "properties": {
@@ -1753,6 +2111,23 @@
           }
         }
       }
+    },
+    "ScheduleSearch": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 865
+          },
+          "fullTitle": {
+            "type": "string",
+            "example": "Юдин Александр Викторович"
+          },
+          "scheduleTarget": {
+            "type": "integer",
+            "example": 2
+          }
+        }
     }
   }
 }
