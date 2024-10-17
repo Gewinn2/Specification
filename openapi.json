@@ -29,7 +29,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/FullUser"
               }
             }
           }
@@ -40,7 +40,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "$ref": "#/components/schemas/FullUser"
                 }
               }
             }
@@ -119,7 +119,7 @@
         }
       }
     },
-    "/web_sign-in":{
+    "/web/sign-in":{
       "post": {
         "tags": [
           "AUTHORIZATION"
@@ -180,12 +180,12 @@
         }
       }
     },
-    "/refresh":{
+    "/refresh/mobile":{
       "post": {
         "tags": [
           "AUTHORIZATION"
         ],
-        "summary": "Обновление access and refresh tokens",
+        "summary": "Обновление access and refresh токенов для мобильного приложения",
         "requestBody": {
           "content": {
             "application/json": {
@@ -199,6 +199,209 @@
             }
           }
         },
+        "responses":{
+          "200": {
+            "description": "Токены успешно обновлены", 
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JWT"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refresh/web":{
+      "post": {
+        "tags": [
+          "AUTHORIZATION"
+        ],
+        "summary": "Обновление access and refresh токенов для админ панели",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "refresh_token": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "Токены успешно обновлены", 
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JWT"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/lks":{
+      "get": {
+        "tags": [
+          "LKS"
+        ],
+        "summary": "Вывод всей информации о пользователе",
+        "responses":{
+          "200": {
+            "description": "Успешный ответ", 
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "main_info": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "additional_info": {
+                      "$ref": "#/components/schemas/UserData"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "LKS"
+        ],
+        "summary": "Обновление access and refresh tokens",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image/png": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Файл для загрузки"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "Аутентификация прошла успешно", 
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JWT"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "LKS"
+        ],
+        "summary": "Обновление access and refresh tokens",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "responses":{
           "200": {
             "description": "Аутентификация прошла успешно", 
@@ -1317,7 +1520,7 @@
           }
         }
       },
-      "User": {
+      "FullUser": {
         "type": "object",
         "properties": {
           "email": {
@@ -1370,6 +1573,71 @@
           "password": {
             "type": "string",
             "example": "qwerty1234"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Электронная почта пользователя"
+          },
+          "password": {
+            "type": "string",
+            "description": "Хешированный пароль пользователя"
+          }
+        }
+      },
+      "UserData": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Имя пользователя"
+          },
+          "last_name": {
+            "type": "string",
+            "description": "Фамилия"
+          },
+          "first_name": {
+            "type": "string",
+            "description": "Имя"
+          },
+          "middle_name": {
+            "type": "string",
+            "description": "Отчество"
+          },
+          "role": {
+            "type": "string",
+            "description": "Роль (студент/преподаватель)"
+          },
+          "institute": {
+            "type": "string",
+            "description": "Институт"
+          },
+          "position_or_course": {
+            "type": "string",
+            "description": "Должность или курс"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "Фото (аватарка)"
+          },
+          "registration_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Дата регистрации"
+          },
+          "last_auth_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Последняя дата авторизации"
+          },
+          "last_modified_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Дата изменения данных"
           }
         }
       },
