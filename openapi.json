@@ -233,63 +233,6 @@
         }
       }
     },
-    "/auth/lks/upload":{
-      "post": {
-        "tags": [
-          "LKS"
-        ],
-        "summary": "Обновление access and refresh tokens",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "image/png": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "Файл для загрузки"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses":{
-          "200": {
-            "description": "Аутентификация прошла успешно", 
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JWT"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Неверные входные данные",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Проблема на стороне сервера",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/news": {
       "get": {
         "tags": [
