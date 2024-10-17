@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.1.3",
   "info": {
     "title": "IQJ",
     "version": "v1",
@@ -23,7 +23,7 @@
           "AUTHORIZATION"
         ],
         "summary": "Регистрация",
-        "description": "Получает email, password, ФИО, БИО, роль добавляет пользователя в бд c ролью студент.",
+        "description": "Создание пользователя в бд.",
         "operationId": "UserRegistration",
         "requestBody": {
           "content": {
@@ -142,14 +142,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "access_token": {
-                      "type": "string"
-                    },
-                    "refresh_token": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/JWT"
                 }
               }
             }
@@ -192,7 +185,7 @@
         "tags": [
           "AUTHORIZATION"
         ],
-        "summary": "Refresh access and refresh tokens",
+        "summary": "Обновление access and refresh tokens",
         "requestBody": {
           "content": {
             "application/json": {
@@ -212,14 +205,64 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "access_token": {
-                      "type": "string"
-                    },
-                    "refresh_token": {
-                      "type": "string"
-                    }
+                  "$ref": "#/components/schemas/JWT"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/lks/upload":{
+      "post": {
+        "tags": [
+          "LKS"
+        ],
+        "summary": "Обновление access and refresh tokens",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image/png": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Файл для загрузки"
                   }
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "Аутентификация прошла успешно", 
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JWT"
                 }
               }
             }
@@ -1286,9 +1329,33 @@
             "type": "string",
             "example": "qwerty1234"
           },
-          "name": {
+          "user_name": {
             "type": "string",
             "example": "vanek"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Иванов"
+          },
+          "first_name": {
+            "type": "string",
+            "example": "Иван"
+          },
+          "middle_name": {
+            "type": "string",
+            "example": "Иванович"
+          },
+          "role": {
+            "type": "string",
+            "example": "student"
+          },
+          "institute": {
+            "type": "string",
+            "example": "ИПТИП"
+          },
+          "position_or_course": {
+            "type": "string",
+            "example": "2"
           }
         }
       },
@@ -1309,9 +1376,11 @@
       "JWT": {
         "type": "object",
         "properties": {
-          "token": {
-            "type": "string",
-            "example": "nqhbdqLKVWLBlbaddwvad.advIdwkvdkavdvauvdw.davgjdvadvamddmvgad"
+          "access_token": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
           }
         }
       },
