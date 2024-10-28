@@ -1566,7 +1566,7 @@
           "SCHEDULE"
         ],
         "summary": "Возвращает массив с расписанием",
-        "description": "Возвращает массив с расписанием по данным полученным из запроса /schedule/search",
+        "description": "class_name - название предмета | class_group_names - массив групп, у которых пара | class_teacher_name - массив преподавателей, которые ведут пару | class_count - номер пары | class_weekday - номер дня недели(1-понедельник и тд.) | class_week - нечетная = 1 или четная неделя = 2 | class_type - тип пары | class_location - аудитория | class_date - дата проведения пары | class_time_start - время начала пары | class_time_end - время конца пары",
         "parameters": [
           {
             "in": "query",
@@ -2070,20 +2070,23 @@
         "items": {
           "type": "object",
         "properties": {
-          "class_id": {
-            "type": "integer",
-            "example": 0
-          }, 
-          "class_group_ids": {
+          "class_name": {
+            "type": "string",
+            "example": "Иностранный язык"
+          },
+          "class_group_names": {
             "type": "array",
             "items": {
               "type": "string",
               "example": "ЭФБО-01-23"
             }
           },
-          "class_teacher_id": {
-            "type": "string",
-            "example": "Сафронов А.А."
+          "class_teacher_names": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Павличенко Александр Иванович"
+            }
           },
           "class_count": {
             "type": "integer",
@@ -2097,17 +2100,25 @@
             "type": "integer",
             "example": 1
           },
-          "class_name": {
-            "type": "string",
-            "example": "кр. 1 н. Физика"
-          },
           "class_type": {
             "type": "string",
-            "example": "ЛК"
+            "example": "ПР"
           },
           "class_location": {
             "type": "string",
-            "example": "ауд. А-15 (В-78)"
+            "example": "И-328 (В-78)"
+          },
+          "class_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "class_time_start": {
+            "type": "string",
+            "example": "9:00"
+          },
+          "class_time_end": {
+            "type": "string",
+            "example": "10:30"
           }
         }
       }
