@@ -1507,7 +1507,7 @@
         }
       }
     },
-    "/schedule/search":{
+    "/schedule/search/{name}":{
       "get": {
         "tags": [
           "SCHEDULE"
@@ -1516,8 +1516,9 @@
         "description": "Возвращает id, полное название и тип объекта расписания. ЭТО ВСЕ НУЖНЫЕ ДАННЫЕ, ЧТОБЫ ПОТОМ ПОЛУЧИТЬ ПО НИМ РАСПИСАНИЕ",
         "parameters": [
           {
-            "in": "query",
+            "in": "path",
             "name": "name",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -1560,7 +1561,7 @@
         }
       }
     },
-    "/schedule/get":{
+    "/schedule/get/{id}/{title}/{target}":{
       "get": {
         "tags": [
           "SCHEDULE"
@@ -1569,22 +1570,25 @@
         "description": "class_name - название предмета | class_group_names - массив групп, у которых пара | class_teacher_name - массив преподавателей, которые ведут пару | class_count - номер пары | class_weekday - номер дня недели(1-понедельник и тд.) | class_week - нечетная = 1 или четная неделя = 2 | class_type - тип пары | class_location - аудитория | class_date - дата проведения пары | class_time_start - время начала пары | class_time_end - время конца пары",
         "parameters": [
           {
-            "in": "query",
+            "in": "path",
             "name": "id",
+            "required": true,
             "schema": {
               "type": "integer"
             }
           },
           {
-            "in": "query",
+            "in": "path",
             "name": "target",
+            "required": true,
             "schema": {
               "type": "integer"
             }
           },
           {
-            "in": "query",
+            "in": "path",
             "name": "title",
+            "required": true,
             "schema": {
               "type": "string"
             }
