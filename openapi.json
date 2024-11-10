@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://mireaiqj.ru:8443"
+      "url": "https://mireaiqj.ru"
     }, 
     {
       "url": "http://localhost:10558"
