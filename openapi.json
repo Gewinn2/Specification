@@ -5,12 +5,12 @@
     "version": "v1",
     "contact": {
       "name": "IQJ API",
-        "url": "https://mireaiqj.ru"
+        "url": "https://iqj.8xbyte.dev"
     }
   },
   "servers": [
     {
-      "url": "https://mireaiqj.ru"
+      "url": "https://api.iqj.8xbyte.dev"
     }, 
     {
       "url": "http://localhost:10558"
