@@ -1861,7 +1861,7 @@
             "type": "string",
             "example": "qwerty1234"
           },
-          "user_name": {
+          "username": {
             "type": "string",
             "example": "vanek"
           },
