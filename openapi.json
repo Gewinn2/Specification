@@ -526,7 +526,7 @@
         }
       }
     },
-    "/auth/lks/avatar":{
+    "/auth/lks/avatar/{id}":{
       "get": {
         "security": [
           {
@@ -537,6 +537,16 @@
           "LKS"
         ],
         "summary": "Получение аватарки профиля",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "responses":{
           "200": {
             "description": "Успешный ответ", 
@@ -575,77 +585,9 @@
             }
           }
         }
-      },
-      "post": {
-        "security": [
-          {
-            "Auth": []
-          }
-        ],
-        "tags": [
-          "LKS"
-        ],
-        "summary": "Добавление аватарки к профилю",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "image": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "Файл для загрузки"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses":{
-          "200": {
-            "description": "Аватарка успешно добавлена", 
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JWT"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Неверные входные данные",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Пользователь не авторизован",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Проблема на стороне сервера",
-            "content": {
-              "application/json": {
-                "schema":{
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
+      }
+    },
+    "/auth/lks/avatar":{
       "put": {
         "security": [
           {
@@ -663,7 +605,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "image": {
+                  "avatar": {
                     "type": "string",
                     "format": "binary",
                     "description": "Файл для загрузки"
@@ -1861,7 +1803,7 @@
             "type": "string",
             "example": "qwerty1234"
           },
-          "username": {
+          "user_name": {
             "type": "string",
             "example": "vanek"
           },
