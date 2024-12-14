@@ -1569,6 +1569,256 @@
           }
         }
       }
+    },
+    "/auth/user_schedule":{
+      "get": {
+        "security": [
+          {                           
+            "Auth": []
+          }
+        ],
+        "tags": [
+          "USER SCHEDULE"
+        ],
+        "summary": "Создание личного расписания пользователя",
+        "responses": {
+          "200": {
+            "description": "Личное расписание пользователя создано",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/UserScheduleList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {                           
+            "Auth": []
+          }
+        ],
+        "tags": [
+          "USER SCHEDULE"
+        ],
+        "summary": "Создание личного расписания пользователя",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserSchedule"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Личное расписание пользователя создано",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/UserSchedule"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "Auth": []
+          }
+        ],
+        "tags": [
+          "USER SCHEDULE"
+        ],
+        "summary": "Изменение личного расписания пользователя",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserSchedule"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Личное расписание пользователя изменено",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref" : "#/components/schemas/UserSchedule"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/user_schedule/{id}":{
+      "delete": {
+        "security": [
+          {
+            "Auth": []
+          }
+        ],
+        "tags": [
+          "USER SCHEDULE"
+        ],
+        "summary": "Удаление личного расписания пользователя",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "string",
+                      "example": "User schedule with id=1 was successfully deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Неверные входные данные",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Проблема на стороне сервера",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2069,7 +2319,7 @@
         }
       }
     },
-    "ScheduleSearch": {
+      "ScheduleSearch": {
         "type": "object",
         "properties": {
           "id": {
@@ -2085,7 +2335,113 @@
             "example": 2
           }
         }
+      },
+      "UserSchedule": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1,
+            "description": "Идентификатор расписания пользователя"
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 1,
+            "description": "Идентификатор пользователя"
+          },
+          "name": {
+            "type": "string",
+            "example": "Пресс качат",
+            "description": "Имя пользователя или название события"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "15.10.2024",
+            "description": "Дата события в формате DD.MM.YYYY"
+          },
+          "time_start": {
+            "type": "string",
+            "format": "time",
+            "example": "11:00",
+            "description": "Время начала события в формате HH:MM"
+          },
+          "time_end": {
+            "type": "string",
+            "format": "time",
+            "example": "12:00",
+            "description": "Время окончания события в формате HH:MM"
+          }
+        }
+      },
+      "CreateUserSchedule": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Пресс качат",
+            "description": "Имя пользователя или название события"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "15.10.2024",
+            "description": "Дата события в формате YYYY-MM-DD"
+          },
+          "time_start": {
+            "type": "string",
+            "format": "time",
+            "example": "11:00",
+            "description": "Время начала события в формате HH:MM"
+          },
+          "time_end": {
+            "type": "string",
+            "format": "time",
+            "example": "12:00",
+            "description": "Время окончания события в формате HH:MM"
+          }
+        }
+      },
+      "UpdateUserSchedule": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1,
+            "description": "Идентификатор расписания пользователя"
+          },
+          "name": {
+            "type": "string",
+            "example": "Анжуманя",
+            "description": "Имя пользователя или название события"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "16.10.2024",
+            "description": "Дата события в формате YYYY-MM-DD"
+          },
+          "time_start": {
+            "type": "string",
+            "format": "time",
+            "example": "13:00",
+            "description": "Время начала события в формате HH:MM"
+          },
+          "time_end": {
+            "type": "string",
+            "format": "time",
+            "example": "14:00",
+            "description": "Время окончания события в формате HH:MM"
+          }
+        }
+      },
+      "UserScheduleList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/UserSchedule"
+        },
+        "description": "Список расписаний пользователей"
+      }
     }
   }
-}
 }
